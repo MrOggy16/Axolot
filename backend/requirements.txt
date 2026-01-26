@@ -2,4 +2,4 @@ flask
 requests
 psutil
 flask-cors
-uvicorn
+gunicorn
