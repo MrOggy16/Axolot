@@ -1,8 +1,13 @@
+import os
+
 # Configuration settings
 
 # Target Application Settings
-APP_HOST = "127.0.0.1"
-APP_PORT = 5000
+# On Render, use 0.0.0.0 to be accessible. Locally, use 127.0.0.1
+APP_HOST = "0.0.0.0" if os.environ.get("RENDER") else "127.0.0.1"
+# Render assigns a port via the PORT environment variable
+APP_PORT = int(os.environ.get("PORT", 5000))
+
 APP_URL = f"http://{APP_HOST}:{APP_PORT}"
 APP_SCRIPT = "breakable_app.py"  # The script to run
 
