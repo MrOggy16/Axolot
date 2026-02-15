@@ -22,7 +22,7 @@ import {
     AreaChart,
 } from "recharts";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001";
 
 interface SystemStatus {
     status: "HEALTHY" | "CRITICAL" | "HEALING" | "UNKNOWN";
@@ -477,11 +477,11 @@ export default function MissionControl() {
                     Mission Control API Offline
                 </h3>
                 <p className="text-sm text-zinc-400 mb-4">
-                    Cannot connect to <code className="text-red-300 bg-red-500/20 px-2 py-0.5 rounded">http://localhost:5001</code>
+                    Cannot connect to <code className="text-red-300 bg-red-500/20 px-2 py-0.5 rounded">{API_URL}</code>
                 </p>
                 <div className="text-left bg-zinc-900/50 p-4 rounded-xl text-sm font-mono text-zinc-400">
-                    <p className="text-zinc-500 mb-2"># Run this command:</p>
-                    <p className="text-emerald-400">python api_server.py</p>
+                    <p className="text-zinc-500 mb-2"># Check Connection:</p>
+                    <p className="text-emerald-400">Ensure the backend is running and URL is correct.</p>
                 </div>
                 <button
                     onClick={() => {

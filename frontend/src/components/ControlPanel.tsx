@@ -15,7 +15,8 @@ import {
     Shuffle
 } from "lucide-react";
 
-const API_URL = "http://localhost:5000";
+const TARGET_URL = process.env.NEXT_PUBLIC_TARGET_URL || "http://localhost:5000";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001";
 
 interface ChaosButton {
     label: string;
@@ -39,7 +40,7 @@ export default function ControlPanel() {
     useEffect(() => {
         const checkBackend = async () => {
             try {
-                const res = await fetch(`${API_URL}/health`, { method: "GET" });
+                const res = await fetch(`${TARGET_URL}/health`, { method: "GET" });
                 setBackendAlive(res.ok);
             } catch {
                 setBackendAlive(false);
@@ -58,7 +59,7 @@ export default function ControlPanel() {
         // Report event to Mission Control for visual spike
         const eventType = endpoint.replace('/', '').replace('-', '-');
         try {
-            await fetch('http://localhost:5001/api/event', {
+            await fetch(`${API_URL}/api/event`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ type: eventType, label })
@@ -68,7 +69,7 @@ export default function ControlPanel() {
         }
 
         try {
-            const res = await fetch(`${API_URL}${endpoint}`, { method: "GET" });
+            const res = await fetch(`${TARGET_URL}${endpoint}`, { method: "GET" });
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             const data = await res.json();
             setStatus(`✅ ${JSON.stringify(data).slice(0, 40)}...`);

@@ -14,7 +14,10 @@ from flask import Flask, Response, jsonify
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=[
+    os.environ.get("FRONTEND_URL", "http://localhost:3000"),
+    "http://localhost:3000",
+])
 
 # Global state for chaos
 LEAKY_BUCKET = []

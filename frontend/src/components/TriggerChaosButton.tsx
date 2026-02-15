@@ -3,6 +3,9 @@
 import { useState } from "react";
 import { Zap, Loader2 } from "lucide-react";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5001";
+const TARGET_URL = process.env.NEXT_PUBLIC_TARGET_URL || "http://localhost:5000";
+
 export default function TriggerChaosButton() {
     const [loading, setLoading] = useState(false);
     const [triggered, setTriggered] = useState(false);
@@ -12,7 +15,7 @@ export default function TriggerChaosButton() {
 
         // Report event to Mission Control for visual spike
         try {
-            await fetch('http://localhost:5001/api/event', {
+            await fetch(`${API_URL}/api/event`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ type: 'chaos', label: 'Random Chaos' })
@@ -22,7 +25,7 @@ export default function TriggerChaosButton() {
         }
 
         try {
-            await fetch("http://localhost:5000/chaos", { method: "GET" });
+            await fetch(`${TARGET_URL}/chaos`, { method: "GET" });
             setTriggered(true);
             // Reset after animation
             setTimeout(() => setTriggered(false), 2000);

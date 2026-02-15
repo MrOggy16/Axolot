@@ -24,7 +24,10 @@ if sys.platform == 'win32':
         pass
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=[
+    os.environ.get("FRONTEND_URL", "http://localhost:3000"),
+    "http://localhost:3000",
+])
 
 # ============================================================================
 # STATE MANAGEMENT
@@ -53,9 +56,9 @@ SYSTEM_STATUS = {
 
 status_lock = threading.Lock()
 
-TARGET_URL = "http://localhost:5000/health"
-TARGET_STATUS_URL = "http://localhost:5000/status"
-HEALTH_CHECK_TIMEOUT = 0.5
+TARGET_URL = os.environ.get("TARGET_APP_URL", "http://localhost:5000") + "/health"
+TARGET_STATUS_URL = os.environ.get("TARGET_APP_URL", "http://localhost:5000") + "/status"
+HEALTH_CHECK_TIMEOUT = 1.0  # Increased for cloud latency
 
 # ============================================================================
 # FLUCTUATION SYSTEM
@@ -364,5 +367,11 @@ if __name__ == "__main__":
     print("  Active Fluctuation System: ENABLED")
     print("=" * 50)
     
+<<<<<<< HEAD
     port = int(os.environ.get("PORT", 5001)) # Different default for local
     app.run(host="0.0.0.0", port=port)
+=======
+    port = int(os.environ.get("PORT", 5001))
+    print(f"  Running on port: {port}")
+    app.run(host="0.0.0.0", port=port, threaded=True)
+>>>>>>> 9d78598 (fix: replace hardcoded localhost URLs with env vars)
